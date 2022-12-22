@@ -1,0 +1,204 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.name }} - Cloud Vitae{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('/build/profile0.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('profile0JS') }}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.1/purify.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    {% endblock %}
+
+{% block body %}
+    <script>
+        {% if isOwner %}
+        let isOwner = true;
+        {% else %}
+        let isOwner = false;
+        {% endif %}
+    </script>
+    <input type="file" accept="image/png, image/jpg, image/jpeg" id="image" style="display: none">
+
+    <div class="popup-container" id="popup">
+        <div class="popup">
+            <div style="display: flex; justify-content: space-between; height: 15%;">
+                <h2 style="margin-top: 2%">Choose a new theme!</h2>
+                <div class="pointer-button" style="margin-top: 2%">
+                    <h2 id="cancelChangeThemeButton">Cancel</h2>
+                </div>
+            </div>
+            <div class="thumb-container">
+                <div class="thumb0" id="thumb0">IOS Theme</div>
+                <div class="thumb1" id="thumb1">B&W Theme</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar" id="navbar"></div>
+    <div class="header" id="header">
+        <div class="profile-picture-container">
+            {% if isOwner %}
+            <div class="profile-picture" style="background-image: url({{ user.picture }})">
+                {% else %}
+                <div class="profile-picture" style="background-image: url(../{{ user.picture }})">
+                    {% endif %}
+                    {% if isOwner %}
+                        <div id="change-profile-picture-button" class="change-profile-picture-button">✏️</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="definition-container">
+                <h1>{{ user.name }}</h1>
+                <h2>{{ user.profession }}</h2>
+                <p style="margin-bottom: 0; margin-top: 10px !important;">{{ user.description }}</p>
+                {% if isOwner %}
+                    <div class="inline-flex">
+                        <h5><a href="/home">Edit profile</a></h5>
+                        <h5 id="changeThemeButton">Change theme</h5>
+                        <h5><a href="/logout">Logout</a></h5>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="socials-container">
+                <h2>Let's get in touch!</h2>
+                <div style="margin: 0 auto">
+                    <p style="text-align: center; margin: 0;">{{ user.city }}, {{ user.country }}</p>
+                    <p style="text-align: center; margin-bottom: 0;">
+                        {% for language in languages %}
+                            {% if loop.index == languages|length %}
+                                {{ language.level }} in {{ language.name }}.
+                            {% else %}
+                                {{ language.level }} in {{ language.name }},
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+                <div class="socials">
+                    <div class="social-link">
+                        {% if isOwner %}
+                            <a href="tel:{{ user.phone }}"><img src="assets/img/socials/phone.png"
+                                                                class="social-img"></a>
+                        {% else %}
+                            <a href="tel:{{ user.phone }}"><img src="../assets/img/socials/phone.png"
+                                                                class="social-img"></a>
+                        {% endif %}
+                    </div>
+
+                    <div class="social-link" id="mail">
+                        {% if isOwner %}
+                            <a href="mailto:{{ user.email }}"><img src="assets/img/socials/mail.png" class="social-img"></a>
+                        {% else %}
+                            <a href="mailto:{{ user.email }}"><img src="../assets/img/socials/mail.png"
+                                                                   class="social-img"></a>
+                        {% endif %}
+                    </div>
+
+                    <div class="social-link" id="mail">
+                        {% if isOwner %}
+                            <img src="assets/img/socials/share.png" class="social-img" id="copy"
+                                 data-id="{{ user.id }}">
+                        {% else %}
+                            <img src="../assets/img/socials/share.png" class="social-img" id="copy"
+                                 data-id="{{ user.id }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="social-link owner" id="download-pdf">
+                        {% if isOwner %}
+                            <img src="assets/img/socials/download.png" class="social-img" id="download" data-id="{{ user.id }}">
+                        {% else %}
+                            <img src="../assets/img/socials/download.png" class="social-img" id="download" data-id="{{ user.id }}">
+                        {% endif %}
+                    </div>
+                    {#                <div class="social-link"> #}
+                    {#                    <a href="https://www.linkedin.com/in/andrei-nicolescu-069534254/" target="_blank"><img #}
+                    {#                                src="assets/img/socials/linkedin.png" class="social-img"></a> #}
+                    {#                </div> #}
+                    {#                <div class="social-link"> #}
+                    {#                    <a href="https://www.instagram.com/andrei_nicolescu/" target="_blank"><img #}
+                    {#                                src="assets/img/socials/instagram.png" class="social-img"></a> #}
+                    {#                </div> #}
+                    {#                <div class="social-link"> #}
+                    {#                    <a href="https://www.facebook.com/profile.php?id=100007184986275" target="_blank"><img #}
+                    {#                                src="assets/img/socials/facebook.png" class="social-img"></a> #}
+                    {#                </div> #}
+                </div>
+            </div>
+        </div>
+
+        <div class="inline">
+            <div class="content" id="content">
+                {% for job in jobs %}
+                    <div class="card-container">
+                        <div class="card">
+                            <div class="card-title">
+                                <h2 style="margin-top: 25px;">{{ job.title }}</h2>
+                                <h3 style="margin-top: 25px;" class="date"><i>{{ job.since|date("F Y") }} -
+                                        {% if job.isActive %}
+                                            Present
+                                        {% else %}
+                                            {{ job.until|date("F Y") }}
+                                        {% endif %}
+                                    </i></h3>
+                            </div>
+                            <div class="card-title">
+                                <h3>{{ job.company }}</h3>
+                                <h3>
+                                    {% set yeardifference = job.until|date("Y") - job.since|date("Y") %}
+                                    {% set monthdifference = job.until|date("m") - job.since|date("m") %}
+                                    {% if yeardifference > 0 %}
+                                        {% if yeardifference == 1 %}
+                                            {{ yeardifference }} Year
+                                        {% else %}
+                                            {{ yeardifference }} Years
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if yeardifference != 0 and monthdifference != 0 %}
+                                        and
+                                    {% endif %}
+                                    {% if monthdifference > 0 %}
+                                        {% if monthdifference == 1 %}
+                                            {{ monthdifference }} Month
+                                        {% else %}
+                                            {{ monthdifference }} Months
+                                        {% endif %}
+                                    {% endif %}
+                                </h3>
+                            </div>
+                            <p>{{ job.description }}</p>
+                            {#                <div class="skill-list"> #}
+                            {#                    <div class="skill">PHP 8</div> #}
+                            {#                    <div class="skill">Symfony 6</div> #}
+                            {#                    <div class="skill">MySQL</div> #}
+                            {#                    <div class="skill">Javascript</div> #}
+                            {#                    <div class="skill">HTML</div> #}
+                            {#                    <div class="skill">CSS</div> #}
+                            {#                </div> #}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="side-content" id="side-content">
+                {% for edu in education %}
+                    <div class="card-container">
+                        <div class="card">
+                            <div class="card-title">
+                                <h2 style="margin-top: 25px;">{{ edu.degree }} in {{ edu.profile }}</h2>
+                            </div>
+                            <div class="card-title">
+                                <h3>{{ edu.institution }}</h3>
+                            </div>
+                            <p>{{ edu.location }} - {{ edu.date|date('F Y') }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+{% endblock %}

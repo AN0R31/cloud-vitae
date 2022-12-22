@@ -1,0 +1,23 @@
+download and install composer:
+    - https://getcomposer.org/Composer-Setup.exe
+
+download and install docker:
+    - https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe
+    - (enable virtualization in BIOS)
+    - wsl --set-default-version 2
+    - run as admin
+
+install scoop:
+    - Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+    - irm get.scoop.sh | iex
+
+install winget:
+    - microsoft store - app installer
+
+run in cmd:
+    - winget install --id Git.Git -e --source winget
+
+git init commands (php storm):
+    - git init
+    - git remote add origin https://github.com/AN0R31/Timetracker_ACCFNS.git
+    - git branch -M main

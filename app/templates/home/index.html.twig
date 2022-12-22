@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('/build/index.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('indexJS') }}
+    {% endblock %}
+
+{% block body %}
+    <div class="waveWrapper waveAnimation">
+        <div class="waveWrapperInner bgTop">
+            <div class="wave waveTop" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgMiddle">
+            <div class="wave waveMiddle" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgBottom">
+            <div class="wave waveBottom" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')"></div>
+        </div>
+    </div>
+
+    <h1 style="color: white">CLOUD - VITAE</h1>
+    <h3 style="color: lightgray">ELEVATE YOUR CAREER AND PROVE YOU’RE QUALIFIED</h3>
+
+    <div class="p-container">
+        <p>Cloud - Vitae is a free and easy to use online CV solution that requires no technical knowledge. We know what recruiters are looking for, and our product will build your ideal CV based on exactly that. No need to worry about what, where and how to write, to struggle aligning a picture of yourself or to learn how to style documents by hand, as Cloud - Vitae will automatically do it for you. Stop wasting your time figuring out how to create a CV from scratch and focus on learning skills that will actually accelerate your career!</p>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <h5 style="color: #8000FF;">It's easy!</h5>
+            <h6>FILL IN YOUR WORK, SKILLS AND EDUCATION, CHOOSE THE STYLE YOU WANT IN ONE CLICK, AND YOU’RE DONE!</h6>
+        </div>
+
+        <div class="card">
+            <h5 style="color: #8000FF;">Smart</h5>
+            <h6>WE KNOW WHAT EMPLOYERS SEARCH FOR! OUR PRODUCT IS SPECIALLY DESIGNED TO SHOW RECRUITERS EXACTLY WHAT THEY WANT TO SEE!</h6>
+        </div>
+
+        <div class="card">
+            <h5 style="color: #8000FF;">and free</h5>
+            <h6>YOU NEED A MODERN, SLICK AND ROBUST CV THAT WILL MAKE YOU STAND OUT FROM THE CROWD. THAT’S OUR PRODUCT, FREE OF CHARGE.</h6>
+        </div>
+    </div>
+
+    <div class="button raise" id="start">
+        Get your CV now!
+    </div>
+
+{#    <div class="p-container">#}
+{#        <div class="card">#}
+{#            <h2>Already have an account?</h2>#}
+{#            <p>Sign in to your account to edit and share your CV!</p>#}
+{#            <div class="button raise" id="signInButton">#}
+{#                <h4>Sign in</h4>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="card">#}
+{#            <h2>Get started!</h2>#}
+{#            <p>Get a free account and start building your dream CV!</p>#}
+{#            <div class="button raise" id="signUpButton">#}
+{#                <h4>Sign up</h4>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}

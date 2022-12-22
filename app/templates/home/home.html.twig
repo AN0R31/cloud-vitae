@@ -1,0 +1,325 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('/build/index.css') }}" type="text/css" rel="stylesheet"/>
+        <link href="{{ asset('/build/home.css') }}" type="text/css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+              integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+              crossorigin="anonymous">
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('homeJS') }}
+    {% endblock %}
+
+{% block body %}
+    <script>
+        let preloadedWorkItems = {{ jobs|length }};
+        let preloadedEduItems = {{ education|length }};
+        let preloadedLanguageItems = {{ languages|length }};
+    </script>
+
+    <div class="waveWrapper waveAnimation">
+        <div class="waveWrapperInner bgTop">
+            <div class="wave waveTop"
+                 style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgMiddle">
+            <div class="wave waveMiddle"
+                 style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgBottom">
+            <div class="wave waveBottom"
+                 style="background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')"></div>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div class="container">
+            <form action="/getStarted" method="post" class="m-auto" style="max-width:600px">
+                {% if hasStarted == false %}
+                    <h2 class="my-4" style="color: #8000FF;">Tell us more about yourself</h2>
+                {% else %}
+                    <h2 class="my-4" style="color: #8000FF;">Edit your Cloud - Vitae!</h2>
+                {% endif %}
+                <hr class="my-4"/>
+                <div class="form-group mb-3 row"><label for="your-name2" class="col-md-5 col-form-label">Your
+                        Name</label>
+                    <div class="col-md-7"><input type="text" class="form-control form-control-lg" id="your-name2"
+                                                 name="name" required value="{{ app.user.name }}"></div>
+                </div>
+                <div class="form-group mb-3 row"><label for="country3" class="col-md-5 col-form-label">Country</label>
+                    <div class="col-md-7"><input type="text" class="form-control form-control-lg" id="country3"
+                                                 name="country" required value="{{ app.user.country }}"></div>
+                </div>
+                <div class="form-group mb-3 row"><label for="city4" class="col-md-5 col-form-label">City</label>
+                    <div class="col-md-7"><input type="text" class="form-control form-control-lg" id="city4" name="city"
+                                                 required value="{{ app.user.city }}"></div>
+                </div>
+                <div class="form-group mb-3 row"><label for="phone" class="col-md-5 col-form-label">Phone</label>
+                    <div class="col-md-7"><input type="tel" class="form-control form-control-lg" id="phone" name="phone"
+                                                 required value="{{ app.user.phone }}"></div>
+                </div>
+                <div class="form-group mb-3 row"><label for="profession5"
+                                                        class="col-md-5 col-form-label">Profession</label>
+                    <div class="col-md-7"><input type="text" class="form-control form-control-lg" id="profession5"
+                                                 name="profession" required value="{{ app.user.profession }}"><small
+                                class="form-text text-muted"> Or
+                            latest job title</small></div>
+                </div>
+                <hr class="bg-transparent border-0 py-1"/>
+                <div class="form-group mb-3 row"><label for="about-you8" class="col-md-5 col-form-label">About
+                        you</label>
+                    <div class="col-md-7"><textarea class="form-control form-control-lg" id="about-you8"
+                                                    name="description"
+                                                    required>{{ app.user.description }}</textarea><small
+                                class="form-text text-muted">Write a short description about yourself</small></div>
+                </div>
+                <hr class="my-4"/>
+                <div class="inline">
+                    <h3 class="my-4" id="workHeader">Work experience</h3>
+                    <div class="add" id="addWorkButton">+</div>
+                </div>
+                <div id="work" data-size="0">
+                    <input type="number" id="work-size" name="work-size" style="display: none" value="0">
+                    <input type="number" id="total-work-size" name="total-work-size" style="display: none" value="0">
+                    <input type="number" id="preloaded-work-size" name="preloaded-work-size" style="display: none"
+                           value="{{ jobs|length }}">
+                    <input type="number" id="preloaded-edu-size" name="preloaded-edu-size" style="display: none"
+                           value="{{ education|length }}">
+                    <input type="number" id="preloaded-language-size" name="preloaded-language-size" style="display: none"
+                           value="{{ languages|length }}">
+                </div>
+                {% for job in jobs %}
+                    <div id="work-{{ loop.index }}">
+                        <div class="inline">
+                            <h5 class="my-4" style="color: red;">Remove</h5>
+                            <div class="remove" id="work-remove-{{ loop.index }}" data-id="work-{{ loop.index }}">-
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3 row">
+                            <label for="job-title12" class="col-md-5 col-form-label">Job title</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control form-control-lg" id="job-title12"
+                                       name="work-job-title-{{ loop.index }}" required value="{{ job.title }}">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row"><label for="company13"
+                                                                class="col-md-5 col-form-label">Company</label>
+                            <div class="col-md-7"><input type="text" class="form-control form-control-lg" id="company13"
+                                                         name="work-company-{{ loop.index }}" required
+                                                         value="{{ job.company }}">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row"><label for="salary14"
+                                                                class="col-md-5 col-form-label">Salary</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control form-control-lg" id="salary14"
+                                       name="work-salary-{{ loop.index }}" required value="{{ job.salary }}">
+                                <small class="form-text text-muted"> per month</small>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row"><label for="job-description16" class="col-md-5 col-form-label">Job
+                                description</label>
+                            <div class="col-md-7">
+                                <textarea class="form-control form-control-lg" id="job-description16"
+                                          name="work-job-description-{{ loop.index }}"
+                                          required>{{ job.description }}</textarea></div>
+                        </div>
+                        <div class="inline date">
+                            <label for="from">Started on</label>
+                            <input type="date" name="work-job-from-{{ loop.index }}"
+                                   id="work-job-from-{{ loop.index }}" value="{{ job.since|date('Y-m-d') }}">
+                        </div>
+                        {% if job.until != null %}
+                            <div class="inline date" id="work-job-until-div-{{ loop.index }}">
+                                <label for="dateofbirth">Worked until</label>
+                                <input type="date" name="work-job-until-{{ loop.index }}"
+                                       id="work-job-until-{{ loop.index }}" value="{{ job.until|date('Y-m-d') }}">
+                            </div>
+                            <div class="inline switch">
+                                <h6>I am currently working here</h6>
+                                <label class="toggle">
+                                    <input class="toggle-checkbox" type="checkbox"
+                                           name="work-job-isActive-{{ loop.index }}"
+                                           id="work-job-isActive-{{ loop.index }}"
+                                           data-key="{{ loop.index }}">
+                                    <div class="toggle-switch"></div>
+                                </label>
+                            </div>
+                        {% else %}
+                            <div class="inline date" id="work-job-until-div-{{ loop.index }}" style="display: none">
+                                <label for="dateofbirth">Worked until</label>
+                                <input type="date" name="work-job-until-{{ loop.index }}"
+                                       id="work-job-until-{{ loop.index }}" value="{{ job.until|date('Y-m-d') }}">
+                            </div>
+                            <div class="inline switch">
+                                <h6>I am currently working here</h6>
+                                <label class="toggle">
+                                    <input class="toggle-checkbox" type="checkbox"
+                                           name="work-job-isActive-{{ loop.index }}"
+                                           id="work-job-isActive-{{ loop.index }}"
+                                           data-key="{{ loop.index }}" checked>
+                                    <div class="toggle-switch"></div>
+                                </label>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <hr class="my-4"/>
+                <div class="inline">
+                    <h3 class="my-4" id="eduHeader">Education</h3>
+                    <div class="add" id="addEduButton">+</div>
+                </div>
+                <div id="edu">
+                    <input type="number" id="edu-size" name="edu-size" style="display: none" value="0">
+                    <input type="number" id="total-edu-size" name="total-edu-size" style="display: none" value="0">
+                </div>
+                {% for edu in education %}
+                    <div id="edu-{{ loop.index }}">
+                        <div class="inline">
+                            <h5 class="my-4" style="color: red;">Remove</h5>
+                            <div class="remove" id="edu-remove-{{ loop.index }}" data-id="edu-{{ loop.index }}">-</div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <label for="institution19" class="col-md-5 col-form-label">Institution</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control form-control-lg" id="institution19"
+                                       name="edu-institution-{{ loop.index }}" required value="{{ edu.institution }}">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <label for="location20" class="col-md-5 col-form-label">Location</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control form-control-lg" id="location20"
+                                       name="edu-location-{{ loop.index }}" required value="{{ edu.location }}">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <label for="profile21" class="col-md-5 col-form-label">Profile</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control form-control-lg" id="profile21"
+                                       name="edu-profile-{{ loop.index }}" required value="{{ edu.profile }}">
+                                <small class="form-text text-muted"> ex: Computer Science</small>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row"><label for="degree23"
+                                                                class="col-md-5 col-form-label">Degree</label>
+                            <div class="col-md-7"><select class="form-select custom-select custom-select-lg"
+                                                          id="degree23" name="edu-degree-{{ loop.index }}">
+                                    {% if edu.degree == 'Associate' %}
+                                        <option selected="selected">Associate</option>
+                                        <option>Bachelor's</option>
+                                        <option>Master's</option>
+                                        <option>Doctoral</option>
+                                    {% elseif edu.degree == 'Bachelor\'s' %}
+                                        <option>Associate</option>
+                                        <option selected="selected">Bachelor's</option>
+                                        <option>Master's</option>
+                                        <option>Doctoral</option>
+                                    {% elseif edu.degree == 'Master\'s' %}
+                                        <option>Associate</option>
+                                        <option>Bachelor's</option>
+                                        <option selected="selected">Master's</option>
+                                        <option>Doctoral</option>
+                                    {% elseif edu.degree == 'Doctoral' %}
+                                        <option>Associate</option>
+                                        <option>Bachelor's</option>
+                                        <option>Master's</option>
+                                        <option selected="selected">Doctoral</option>
+                                    {% else %}
+                                        <option>Associate</option>
+                                        <option>Bachelor's</option>
+                                        <option>Master's</option>
+                                        <option>Doctoral</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="inline date">
+                            <label for="from">Graduated on</label>
+                            <input type="date" name="edu-graduated-on-{{ loop.index }}"
+                                   id="edu-graduated-on-{{ loop.index }}"  value="{{ edu.date|date('Y-m-d') }}">
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <hr class="my-4"/>
+                <div class="inline">
+                    <h3 class="my-4" id="languageHeader">Languages</h3>
+                    <div class="add" id="addLanguageButton">+</div>
+                </div>
+                <div id="language">
+                    <input type="number" id="language-size" name="language-size" style="display: none" value="0">
+                    <input type="number" id="total-language-size" name="total-language-size" style="display: none" value="0">
+                </div>
+                {% for language in languages %}
+                <div id="language-{{ loop.index }}">
+                    <div class="inline">
+                        <h5 class="my-4" style="color: red;">Remove</h5>
+                        <div class="remove" id="language-remove-{{ loop.index }}" data-id="language-{{ loop.index }}">-</div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="name19" class="col-md-5 col-form-label">Language name</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control form-control-lg" id="name19"
+                                   name="language-name-{{ loop.index }}" required value="{{ language.name }}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row"><label for="level23"
+                                                            class="col-md-5 col-form-label">Level</label>
+                        <div class="col-md-7"><select class="form-select custom-select custom-select-lg"
+                                                      id="level23" name="language-level-{{ loop.index }}">
+                                {% if language.level == 'Beginner' %}
+                                    <option selected="selected">Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Native</option>
+                                {% elseif language.level == 'Intermediate' %}
+                                    <option>Beginner</option>
+                                    <option selected="selected">Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Native</option>
+                                {% elseif language.level == 'Advanced' %}
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option selected="selected">Advanced</option>
+                                    <option>Native</option>
+                                {% elseif language.level == 'Native' %}
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option selected="selected">Native</option>
+                                {% else %}
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Native</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <hr class="my-4"/>
+                <div class="form-group mb-3 row">
+                    <label for="generate25" class="col-md-5 col-form-label"></label>
+                    <div class="col-md-7">
+                        <button class="btn btn-primary btn-lg" type="submit"
+                                style="background-color: #8000FF !important; border: none !important;">
+                            {% if hasStarted == false %}
+                                Generate!
+                            {% else %}
+                                Save Changes!
+                            {% endif %}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

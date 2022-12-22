@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+    height: 100%;
+    background-color: #FAFAFA;
+}
+
+h1 {
+    margin: 3% 0 0 0;
+    text-align: center;
+    font-size: 45px;
+    font-weight: 200;
+    color: black;
+}
+
+h2 {
+    font-size: 30px;
+    color: black;
+    font-weight: 200;
+}
+
+h3 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 100;
+    color: black;
+}
+
+h4 {
+    font-size: 20px;
+    color: white;
+    letter-spacing: .15em;
+    text-shadow: 0 0 10px #787777FF;
+}
+
+h5 {
+    margin: 30px 0;
+    font-size: 30px;
+    font-weight: 300;
+    color: black;
+}
+
+h6 {
+    margin: 0 30px 50px 30px;
+    font-size: 15px;
+    font-weight: 200;
+    text-align: justify;
+    line-height: 40px;
+    color: black;
+}
+
+p {
+    margin: 10px 25px;
+    font-weight: 200;
+    font-size: 20px;
+    color: black;
+    line-height: 30px;
+}
+
+.p-container {
+    margin: 3% auto;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0);
+    filter: drop-shadow(3px 6px 3px rgba(0, 0, 0, 0.5));
+    border-radius: 10px;
+    text-align: justify;
+    width: 75%;
+}
+
+.card-container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.logo-container {
+    margin-top: 10vh;
+    width: 100%;
+    height: 20%;
+    border: 1px solid darkgray;
+
+    text-transform: uppercase;
+    text-align: center;
+    background: #e7e5e4;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.choices-container {
+    margin-top: 15vh;
+    width: 100%;
+    height: 40%;
+
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.card {
+    width: 15%;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 35px;
+    filter: drop-shadow(1px 5px 1px rgba(0, 0, 0, 0.2));
+
+    text-transform: uppercase;
+    text-align: center;
+
+    background: rgb(255,255,255);
+    background: linear-gradient(160deg, rgba(255,255,255,1) 90%, rgba(128,0,255,1) 95%, rgba(255,121,69,1) 100%);
+
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.button {
+    margin: 4% auto;
+    width: fit-content;
+    height: fit-content;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 10px;
+
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 700;
+    background: #8000FF;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition-duration: 0.25s;
+}
+
+.raise:hover,
+.raise:focus {
+    box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+    transform: translateY(-0.25em);
+    transition-duration: 0.25s;
+    cursor: pointer;
+}
+
+.raise {
+    --hover: #1c1c1c;
+}
+
+@media screen and (max-width: 1400px) {
+    .card-container {
+        flex-direction: column;
+    }
+
+    .card {
+        margin-top: 3%;
+        width: 40%;
+    }
+
+    .p-container {
+        margin: 7% auto;
+    }
+
+    .choices-container {
+        margin-top: 0;
+        width: 100%;
+        height: fit-content;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+}
+
+@keyframes move_wave {
+    0% {
+        transform: translateX(0) translateZ(0) scaleY(1)
+    }
+    50% {
+        transform: translateX(-25%) translateZ(0) scaleY(0.55)
+    }
+    100% {
+        transform: translateX(-50%) translateZ(0) scaleY(1)
+    }
+}
+.waveWrapper {
+    z-index: -1;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+}
+.waveWrapperInner {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    bottom: -1px;
+    background-image: linear-gradient(to top, #8000FF 15%, #FF7945 85%);
+}
+.bgTop {
+    z-index: 15;
+    opacity: 0.5;
+}
+.bgMiddle {
+    z-index: 10;
+    opacity: 0.75;
+}
+.bgBottom {
+    z-index: 5;
+}
+.wave {
+    position: absolute;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background-repeat: repeat no-repeat;
+    background-position: 0 bottom;
+    transform-origin: center bottom;
+}
+.waveTop {
+    background-size: 50% 100px;
+}
+.waveAnimation .waveTop {
+    animation: move-wave 3s;
+    -webkit-animation: move-wave 3s;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+.waveMiddle {
+    background-size: 50% 120px;
+}
+.waveAnimation .waveMiddle {
+    animation: move_wave 10s linear infinite;
+}
+.waveBottom {
+    background-size: 50% 100px;
+}
+.waveAnimation .waveBottom {
+    animation: move_wave 15s linear infinite;
+}

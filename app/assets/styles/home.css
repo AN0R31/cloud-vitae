@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.form-container {
+    width: 80%;
+    height: 80%;
+    border: 1px solid darkgray;
+    background-color: white;
+    border-radius: 10px;
+    margin: 0 auto;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.form {
+    margin-top: 10%;
+}
+
+.form-line {
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-evenly;
+}
+
+.inline {
+    display: inline-flex;
+    justify-content: space-evenly;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
+
+.remove-button {
+    margin-top: 5%;
+    width: 30%;
+    height: 10%;
+    border: 1px solid red;
+    background-color: red;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 3px;
+}
+
+.remove-button:hover {
+    cursor: pointer;
+}
+
+.add {
+    color: greenyellow;
+    font-size: 30px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.add:hover {
+    cursor: pointer;
+}
+
+.remove {
+    color: red;
+    font-size: 30px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.remove:hover {
+    cursor: pointer;
+}
+
+.inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h3 {
+    margin: 0 0;
+}
+
+[type="date"] {
+    background: #fff
+    url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)
+    97% 50% no-repeat;
+}
+[type="date"]::-webkit-inner-spin-button {
+    display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+
+label {
+    display: block;
+}
+input {
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 3px 5px;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+    width: 190px;
+}
+
+.date {
+    margin-bottom: 30px;
+}
+
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, ".SFNSText-Regular", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+}
+
+.toggle {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.toggle-switch {
+    display: inline-block;
+    background: #ccc;
+    border-radius: 16px;
+    width: 58px;
+    height: 32px;
+    position: relative;
+    vertical-align: middle;
+    transition: background 0.25s;
+}
+.toggle-switch:before, .toggle-switch:after {
+    content: "";
+}
+.toggle-switch:before {
+    display: block;
+    background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    transition: left 0.25s;
+}
+.toggle:hover .toggle-switch:before {
+    background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.toggle-checkbox:checked + .toggle-switch {
+    background: black;
+}
+.toggle-checkbox:checked + .toggle-switch:before {
+    left: 30px;
+}
+
+.toggle-checkbox {
+    position: absolute;
+    visibility: hidden;
+}
+
+.toggle-label {
+    margin-left: 5px;
+    position: relative;
+    top: 2px;
+}
+
+.switch {
+    margin: 30px 0;
+}

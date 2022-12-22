@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error!{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('/build/index.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('indexJS') }}
+    {% endblock %}
+
+{% block body %}
+    <style>
+        a {
+            color: black;
+        }
+
+        @media screen and (max-width: 1400px) {
+            .card {
+                margin-top: 5vh;
+                width: 70%;
+                height: 40%;
+            }
+
+            .choices-container {
+                margin-top: 0;
+                width: 100%;
+                height: 80%;
+
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+            }
+        }
+
+        @media screen and (max-width: 500px) {
+            .choices-container {
+                height: 40%;
+            }
+        }
+    </style>
+
+    <div class="logo-container">
+        <h1>CLOUD - VITAE</h1>
+        <h3>{{ message }} - <b><a href="/profile">Return Home</a></b></h3>
+    </div>
+
+    <div class="choices-container">
+        <div class="card" style="background-image: url({{ extension }}/assets/img/error.gif); background-size: 100% 100%;">
+        </div>
+    </div>
+{% endblock %}

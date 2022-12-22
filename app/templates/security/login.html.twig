@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign in!{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('/build/auth.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    <div class="waveWrapper waveAnimation">
+        <div class="waveWrapperInner bgTop">
+            <div class="wave waveTop"
+                 style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgMiddle">
+            <div class="wave waveMiddle"
+                 style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgBottom">
+            <div class="wave waveBottom"
+                 style="background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')"></div>
+        </div>
+    </div>
+
+    <h1><a href="/" style="font-weight: 200;">CLOUD - VITAE</a></h1>
+    <h3>ELEVATE YOUR CAREER AND PROVE YOU’RE QUALIFIED</h3>
+
+    <div class="choices-container">
+        <div class="card">
+            <h2>SIGN IN</h2>
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}
+            <form method="post">
+                <div class="form-container">
+                    <h4>E-Mail</h4>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                           class="form-control"
+                           autocomplete="email" required autofocus>
+                    <h4>Password</h4>
+                    <input type="password" name="password" id="inputPassword" class="form-control"
+                           autocomplete="current-password" required>
+                    <div class="form-element">
+                        <input type="checkbox" name="_remember_me">
+                        <label class="h7">Remember me after I sign in</label>
+                    </div>
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
+                </div>
+                <button type="submit" class="button raise">
+                    Get your CV now!
+                </button>
+            </form>
+            <p>Don't have an account yet? <a href="/register" style="color: #8000FF">Sign UP</a></p>
+        </div>
+    </div>
+
+{% endblock %}
