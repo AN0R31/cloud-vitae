@@ -31,6 +31,8 @@ Encore
     .addEntry('home', './assets/styles/home.css')
     .addEntry('profile0', './assets/styles/cv/profile0.css')
     .addEntry('profile1', './assets/styles/cv/profile1.css')
+    .addEntry('profile2', './assets/styles/cv/profile2.css')
+    .addEntry('profile3', './assets/styles/cv/profile3.css')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

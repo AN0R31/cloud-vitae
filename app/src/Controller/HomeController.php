@@ -91,7 +91,6 @@ class HomeController extends AbstractController
         $entityManager->flush();
 
         $oldLanguages = $entityManager->getRepository(Language::class)->findBy(['user' => $user]);
-        //dd($oldLanguages);
         foreach ($oldLanguages as $oldLanguage) {
             $entityManager->remove($oldLanguage);
         }
@@ -173,7 +172,6 @@ class HomeController extends AbstractController
                 $entityManager->flush();
             }
         }
-        //dd($request->request);
         for ($i = 1; $i <= intval($request->request->get('preloaded-language-size')); $i++) {
             if ($request->request->get('language-name-' . $i) !== null) {
                 $languageItem = new Language();

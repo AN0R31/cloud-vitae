@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.name }} - Cloud Vitae{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('/build/profile3.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('profile0JS') }}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.1/purify.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    {% endblock %}
+
+{% block body %}
+    <script>
+        {% if isOwner %}
+        let isOwner = true;
+        {% else %}
+        let isOwner = false;
+        {% endif %}
+    </script>
+    <input type="file" accept="image/png, image/jpg, image/jpeg" id="image" style="display: none">
+
+    <div class="popup-container" id="popup">
+        <div class="popup">
+            <div style="display: flex; justify-content: space-between; height: 15%;">
+                <h2 style="margin-top: 2%">Choose a new theme!</h2>
+                <div class="pointer-button" style="margin-top: 2%">
+                    <h2 id="cancelChangeThemeButton">Cancel</h2>
+                </div>
+            </div>
+            <div class="thumb-container">
+                <div class="thumb0" id="thumb0">IOS Theme</div>
+                <div class="thumb1" id="thumb1">B&W Theme</div>
+                <div class="thumb2" id="thumb2">RGB Theme</div>
+                <div class="thumb3" id="thumb3">AIO Black</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="about-container">
+            {% if isOwner %}
+                <div class="avatar" style="background-image: url({{ user.picture }})">
+                    <div id="change-profile-picture-button" class="change-profile-picture-button">✏️</div>
+                </div>
+            {% else %}
+                <div class="avatar" style="background-image: url(../{{ user.picture }})"></div>
+            {% endif %}
+
+            <div class="about-text-container">
+                <div class="title">{{ user.profession }}</div>
+                <div class="name">{{ user.name }}</div>
+                <div class="description">{{ user.description }}</div>
+                <div class="about-buttons-container">
+                    <div class="about-button owner" id="download">Download</div>
+                    <div class="about-button"><a href="tel:{{ user.phone }}">Call</a></div>
+                    <div class="about-button"><a href="mailto:{{ user.email }}">Email</a></div>
+                    <div class="about-button owner" id="copy" data-id="{{ user.id }}">Link</div>
+                </div>
+                {% if isOwner %}
+                    <div class="about-buttons-container owner">
+                        <div class="about-button"><a href="/home">Edit profile</a></div>
+                        <div class="about-button" id="changeThemeButton">Change theme</div>
+                        <div class="about-button"><a href="/logout">Logout</a></div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="general-container">
+            <div class="section-title">
+                <div class="section-title-text">Work experience</div>
+                <div class="section-title-line"></div>
+            </div>
+            <div class="general-container-row">
+                {% for job in jobs %}
+                    <div class="work-item">
+                        <div class="section-title-text">{{ job.title }}</div>
+                        <div class="job-date">{{ job.since|date("F Y") }} -
+                            {% if job.isActive %}
+                                Present
+                            {% else %}
+                                {{ job.until|date("F Y") }}
+                            {% endif %}
+                        </div>
+                        <div class="description">{{ job.description }}</div>
+                    </div>
+                    {% if loop.index % 2 == 0 %}
+                        </div><div class="general-container-row">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="general-container">
+            <div class="section-title">
+                <div class="section-title-text">Education</div>
+                <div class="section-title-line"></div>
+            </div>
+            {% if education|length == 1 %}
+                <div class="general-container-row" style="justify-content: flex-start !important;">
+            {% else %}
+                <div class="general-container-row">
+            {% endif %}
+                {% for edu in education %}
+                    <div class="edu-item">
+                        <div class="section-title-text">{{ edu.degree }} in {{ edu.profile }}</div>
+                        <div class="job-date">{{ edu.institution }}</div>
+                        <div class="description">{{ edu.location }} - {{ edu.date|date('F Y') }}</div>
+                    </div>
+                    {% if loop.index % 3 == 0 %}
+                        </div><div class="general-container-row">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="general-container">
+            <div class="section-title">
+                <div class="section-title-text">Languages</div>
+                <div class="section-title-line"></div>
+            </div>
+            <div class="general-container-row">
+                {% for language in languages %}
+                    <div class="language-item">
+                        <div class="section-title-text">{{ language.level }} in {{ language.name }}</div>
+                    {% if loop.index % 5 == 0 %}
+                        </div><div class="general-container-row">
+                    {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+{% endblock %}

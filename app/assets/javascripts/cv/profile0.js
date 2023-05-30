@@ -1,27 +1,27 @@
 import axios from "axios";
 
 function myFunction(x) {
-    if (x <= 550) { // If media query matches
-        if (x <= 400) {
-            document.getElementById('navbar').style.height = '0';
-            document.getElementById('header').style.height = '15%';
-            document.getElementById('content').style.height = '80%';
-            document.getElementById('side-content').style.height = '80%';
-        } else {
-            document.getElementById('navbar').style.height = '0';
-            document.getElementById('header').style.height = '20%';
-            document.getElementById('content').style.height = '75%';
-            document.getElementById('side-content').style.height = '75%';
-        }
-    } else {
-        document.getElementById('navbar').style.height = '5%';
-        document.getElementById('header').style.height = '25%';
-        document.getElementById('content').style.height = '70%';
-        document.getElementById('side-content').style.height = '70%';
-    }
+    // if (x <= 550) { // If media query matches
+    //     if (x <= 400) {
+    //         document.getElementById('navbar').style.height = '0';
+    //         document.getElementById('header').style.height = '15%';
+    //         document.getElementById('content').style.height = '80%';
+    //         document.getElementById('side-content').style.height = '80%';
+    //     } else {
+    //         document.getElementById('navbar').style.height = '0';
+    //         document.getElementById('header').style.height = '20%';
+    //         document.getElementById('content').style.height = '75%';
+    //         document.getElementById('side-content').style.height = '75%';
+    //     }
+    // } else {
+    //     document.getElementById('navbar').style.height = '5%';
+    //     document.getElementById('header').style.height = '25%';
+    //     document.getElementById('content').style.height = '70%';
+    //     document.getElementById('side-content').style.height = '70%';
+    // }
 }
 
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 4; i++) {
     document.getElementById('thumb' + i).addEventListener("click", event => {
         const dataToSend = new FormData()
         dataToSend.set('theme', String(i))
@@ -74,10 +74,26 @@ document.getElementById('image').onchange = function (e) {
 
 document.getElementById('download').addEventListener("click", event => {
     generatePDF()
+    // tetsPDF()
 })
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 const generatePDF = async () => {
+    // let contentHeight = document.getElementById('content').height
+    // document.getElementById('content').height = 'auto'
+    // document.getElementById('content').overflowY = 'visible'
+    document.body.overflow = 'visible'
+
+    let body = document.body,
+        html = document.documentElement;
+
+    let height = Math.max( body.scrollHeight, body.offsetHeight,
+        html.clientHeight, html.scrollHeight, html.offsetHeight );
+    let noPages = height/3508
+    noPages = Math.floor(noPages)
+
+    height = (noPages * 3508)+(3508-(height-(noPages * 3508)))
+
     let toHide = document.getElementsByClassName('owner')
     for (let i = 0; i < toHide.length; i++) {
         toHide[i].style.display = 'none'
@@ -88,11 +104,14 @@ const generatePDF = async () => {
         margin: [0, 0, 0, 0],
         filename: 'my_cloud_vitae.pdf',
         image: {type: 'jpeg', quality: 1},
-        html2canvas: {scale: 2},
+        html2canvas: {scale: 2.5, scrollY: 1, windowHeight: height},
         jsPDF: {unit: 'in', format: 'a3', orientation: 'landscape', precision: '12', putOnlyUsedFonts: true}
     };
     // choose the element and pass it to html2pdf() function and call the save() on it to save as pdf.
     html2pdf().set(opt).from(element).save()
+    // document.getElementById('content').height = contentHeight
+    // document.getElementById('content').overflowY = 'scroll'
+    document.body.overflow = 'hidden'
 
     await delay(1000);
     for (let i = 0; i < toHide.length; i++) {
@@ -100,7 +119,11 @@ const generatePDF = async () => {
     }
 }
 
-//
+function tetsPDF() {
+
+}
+
+
 // function saveAsPdf() {
 //
 //     window.jsPDF = window.jspdf.jsPDF;

@@ -7,6 +7,7 @@ use App\Form\RegistrationFormType;
 use App\Security\AppAuthenticator;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Hybridauth\Provider\LinkedIn;
 
 class RegistrationController extends AbstractController
 {
@@ -90,6 +92,59 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    #[Route(path: '/register/linkedin', name: 'app_register_linkedin')]
+    public function registerLinkedin(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    {
+        $config = [
+            'callback' => 'http://localhost:8080/register/linkedin',
+            'keys' => [
+                'id' => '77qw3v48zz0zeh',
+                'secret' => 'kRXAWgSNebmZtHfL'
+            ],
+            'scope' => 'r_liteprofile r_emailaddress',
+        ];
+
+        $adapter = new LinkedIn($config);
+        $adapter->authenticate();
+        $userProfile = $adapter->getUserProfile();
+//        dd($userProfile);
+
+        $preUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $userProfile->email]);
+        if ($preUser === null) {
+            $user = new User();
+            $user->setEmail($userProfile->email);
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    'asdasd'
+                )
+            );
+            $user->setIsVerified(1);
+            $user->setName($userProfile->displayName);
+            $user->setCountry($userProfile->country);
+            $user->setCity($userProfile->city);
+            $user->setDescription($userProfile->description);
+            $user->setPhone($userProfile->phone);
+            $user->setPicture($userProfile->photoURL);
+            $user->setHasStarted(false);
+            $user->setStyle(1);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $userAuthenticator->authenticateUser(
+                $user,
+                $authenticator,
+                $request
+            );
+        }
+
+        return $userAuthenticator->authenticateUser(
+            $preUser,
+            $authenticator,
+            $request
+        );
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]

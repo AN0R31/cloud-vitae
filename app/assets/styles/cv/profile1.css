@@ -324,6 +324,54 @@ h5:hover {
     cursor: pointer;
 }
 
+.thumb2 {
+    background: linear-gradient(-90deg, #ff0000, #38ff00, #002bff, #ff0000);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    color: black;
+
+    width: 10%;
+    height: fit-content;
+    border-radius: 5px;
+    padding: 10px 0;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    transition: color 0.5s ease;
+}
+
+.thumb2:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.thumb3 {
+    border: 1px solid #1c1c1c;
+    background-color: #1c1c1c;
+    color: white;
+
+    width: 10%;
+    height: fit-content;
+    border-radius: 5px;
+    padding: 10px 0;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    transition: color 0.5s, background-color 0.5s ease;
+}
+
+.thumb3:hover {
+    background-color: papayawhip;
+    color: #1c1c1c;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 1250px) {
     .thumb0 {
         width: 20%;
