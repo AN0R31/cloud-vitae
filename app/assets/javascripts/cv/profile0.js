@@ -18,7 +18,6 @@ function getQr() {
         // html2canvas: {scale: 3, scrollY: 1, backgroundColor: '#000000', windowWidth: 1, windowHeight: 1},
         // jsPDF: {unit: 'in', format: 'B6', orientation: 'landscape', precision: '12', putOnlyUsedFonts: true, width: 10, height: 10, fillColor: '#000000'}
     };
-
     // html2pdf().set(opt).from(document.getElementById('qr_code')).save()
     var exporter = new html2pdf(document.getElementById('qr_code'), {
         margin:       0,
