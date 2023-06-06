@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('/build/index.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+    {% block javascripts %}{% endblock %}
+
+{% block body %}
+    <div class="waveWrapper waveAnimation">
+        <div class="waveWrapperInner bgTop">
+            <div class="wave waveTop" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgMiddle">
+            <div class="wave waveMiddle" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgBottom">
+            <div class="wave waveBottom" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')"></div>
+        </div>
+    </div>
+
+    <h1 style="color: white">CLOUD - VITAE</h1>
+    <h3 style="color: lightgray">ELEVATE YOUR CAREER AND PROVE YOU’RE QUALIFIED</h3>
+
+    <div class="p-container" style="width: fit-content;text-align: center;">
+        <p style="font-weight: normal; font-size: 25px;">{{ errorTitle }}</p><br>
+        <p style="font-size: 20px;">{{ errorBody }}</p><br>
+        <p style="font-size: 17px;"><i>{{ errorAdditionalInfo }} <a href="{{ errorAdditionalInfoLink }}">{{ errorAdditionalInfoLinkButtonText }}</a></i></p><br>
+    </div>
+
+{% endblock %}

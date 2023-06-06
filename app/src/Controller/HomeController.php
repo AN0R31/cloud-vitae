@@ -14,9 +14,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class HomeController extends AbstractController
 {
+    public static function isUserVerified(UserInterface $user) {
+        if (!$user->isVerified()) {
+            return false;
+        }
+        return true;
+    }
+
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
@@ -34,6 +42,16 @@ class HomeController extends AbstractController
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_index');
+        }
+
+        if (!self::isUserVerified($this->getUser())) {
+            return $this->render('error/generic.html.twig', [
+                'errorTitle' => 'Ooops... It seems you have not verified your email address yet.',
+                'errorBody' => 'Please check your email and follow the link we sent you to gain access here.',
+                'errorAdditionalInfo' => 'Didn\'t receive it?',
+                'errorAdditionalInfoLink' => 'http://localhost:8080/resendEmailVerify/' . $this->getUser()->getId(),
+                'errorAdditionalInfoLinkButtonText' => 'Resend now!',
+            ]);
         }
 
         $jobs = $entityManager->getRepository(Work::class)->findBy(['user' => $this->getUser()]);
@@ -68,7 +86,20 @@ class HomeController extends AbstractController
     #[Route('/getStarted', methods: ['POST'])]
     public function getStarted(Request $request, EntityManagerInterface $entityManager): Response
     {
-        //dd($request->request);
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_index');
+        }
+
+        if (!self::isUserVerified($this->getUser())) {
+            return $this->render('error/generic.html.twig', [
+                'errorTitle' => 'Ooops... It seems you have not verified your email address yet.',
+                'errorBody' => 'Please check your email and follow the link we sent you to gain access here.',
+                'errorAdditionalInfo' => 'Didn\'t receive it?',
+                'errorAdditionalInfoLink' => 'http://localhost:8080/resendEmailVerify/' . $this->getUser()->getId(),
+                'errorAdditionalInfoLinkButtonText' => 'Resend now!',
+            ]);
+        }
+
         $user = $this->getUser();
         $user->setName($request->request->get('name'));
         $user->setCountry($request->request->get('country'));
@@ -209,6 +240,16 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
+        if (!self::isUserVerified($this->getUser())) {
+            return $this->render('error/generic.html.twig', [
+                'errorTitle' => 'Ooops... It seems you have not verified your email address yet.',
+                'errorBody' => 'Please check your email and follow the link we sent you to gain access here.',
+                'errorAdditionalInfo' => 'Didn\'t receive it?',
+                'errorAdditionalInfoLink' => 'http://localhost:8080/resendEmailVerify/' . $this->getUser()->getId(),
+                'errorAdditionalInfoLinkButtonText' => 'Resend now!',
+            ]);
+        }
+
         $user = $this->getUser();
 
         if ($user->isHasStarted()) {
@@ -267,6 +308,20 @@ class HomeController extends AbstractController
     #[Route('/changeProfilePicture', methods: ['POST'])]
     public function changeProfilePicture(EntityManagerInterface $entityManager, Request $request, KernelInterface $kernel): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_index');
+        }
+
+        if (!self::isUserVerified($this->getUser())) {
+            return $this->render('error/generic.html.twig', [
+                'errorTitle' => 'Ooops... It seems you have not verified your email address yet.',
+                'errorBody' => 'Please check your email and follow the link we sent you to gain access here.',
+                'errorAdditionalInfo' => 'Didn\'t receive it?',
+                'errorAdditionalInfoLink' => 'http://localhost:8080/resendEmailVerify/' . $this->getUser()->getId(),
+                'errorAdditionalInfoLinkButtonText' => 'Resend now!',
+            ]);
+        }
+
         $user = $this->getUser();
         if ($user === null) {
             return $this->render('error/error.html.twig', [
@@ -291,6 +346,20 @@ class HomeController extends AbstractController
     #[Route('/changeTheme', methods: ['POST'])]
     public function changeTheme(EntityManagerInterface $entityManager, Request $request, KernelInterface $kernel): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_index');
+        }
+
+        if (!self::isUserVerified($this->getUser())) {
+            return $this->render('error/generic.html.twig', [
+                'errorTitle' => 'Ooops... It seems you have not verified your email address yet.',
+                'errorBody' => 'Please check your email and follow the link we sent you to gain access here.',
+                'errorAdditionalInfo' => 'Didn\'t receive it?',
+                'errorAdditionalInfoLink' => 'http://localhost:8080/resendEmailVerify/' . $this->getUser()->getId(),
+                'errorAdditionalInfoLinkButtonText' => 'Resend now!',
+            ]);
+        }
+
         $user = $this->getUser();
         if ($user === null) {
             return $this->render('error/error.html.twig', [

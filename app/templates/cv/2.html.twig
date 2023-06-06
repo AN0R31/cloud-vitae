@@ -12,10 +12,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.1/purify.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/polyfills.umd.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     {% endblock %}
 
 {% block body %}
     <script>
+        let userId = '{{ user.id }}';
         {% if isOwner %}
         let isOwner = true;
         {% else %}
@@ -35,174 +40,109 @@
             <div class="thumb-container">
                 <div class="thumb0" id="thumb0">IOS Theme</div>
                 <div class="thumb1" id="thumb1">B&W Theme</div>
-                <div class="thumb2" id="thumb2">RGB Theme</div>
+                <div class="thumb2" id="thumb2">AIO Class</div>
                 <div class="thumb3" id="thumb3">AIO Black</div>
             </div>
         </div>
     </div>
 
-    <div class="navbar" id="navbar"></div>
-    <div class="header" id="header">
-        <div class="profile-picture-container">
+    <div class="main-container">
+        <div class="about-container">
             {% if isOwner %}
-            <div class="profile-picture" style="background-image: url({{ user.picture }})">
-                {% else %}
-                <div class="profile-picture" style="background-image: url(../{{ user.picture }})">
-                    {% endif %}
-                    {% if isOwner %}
-                        <div id="change-profile-picture-button" class="change-profile-picture-button owner">✏️</div>
-                    {% endif %}
+                <div class="avatar" style="background-image: url({{ user.picture }})">
+                    <div id="change-profile-picture-button" class="change-profile-picture-button">✏️</div>
+                    <div id="qr_code" class="qr-code">
+                        <h1 style="display: none" id="qr_code_hidden">{{ user.name }}</h1>
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="avatar" style="background-image: url(../{{ user.picture }})"></div>
+            {% endif %}
 
-            <div class="definition-container">
-                <h1>{{ user.name }}</h1>
-                <h2>{{ user.profession }}</h2>
-                <p style="margin-bottom: 0; margin-top: 10px !important;">{{ user.description }}</p>
+            <div class="about-text-container">
+                <div class="title">{{ user.profession }}</div>
+                <div class="name">{{ user.name }}</div>
+                <div class="description">{{ user.description }}</div>
+                <div class="about-buttons-container">
+                    <div class="about-button owner" id="download">Download</div>
+                    <div class="about-button"><a href="tel:{{ user.phone }}">Call</a></div>
+                    <div class="about-button"><a href="mailto:{{ user.email }}">Email</a></div>
+                    <div class="about-button" id="get-qr">QR</div>
+                    <div class="about-button owner" id="copy" data-id="{{ user.id }}">Link</div>
+                </div>
                 {% if isOwner %}
-                    <div class="inline-flex owner">
-                        <h5><a href="/home" style="color: gray">Edit profile</a></h5>
-                        <h5 id="changeThemeButton" style="color: gray">Change theme</h5>
-                        <h5><a href="/logout" style="color: gray">Logout</a></h5>
+                    <div class="about-buttons-container owner">
+                        <div class="about-button"><a href="/home">Edit profile</a></div>
+                        <div class="about-button" id="changeThemeButton">Change theme</div>
+                        <div class="about-button"><a href="/logout">Logout</a></div>
                     </div>
                 {% endif %}
             </div>
+        </div>
 
-            <div class="socials-container">
-                <h2>Let's get in touch!</h2>
-                <div style="margin: 0 auto">
-                    <p style="text-align: center; margin: 0;">{{ user.city }}, {{ user.country }}</p>
-                    <p style="text-align: center; margin-bottom: 0;">
-                        {% for language in languages %}
-                            {% if loop.index == languages|length %}
-                                {{ language.level }} in {{ language.name }}.
-                            {% else %}
-                                {{ language.level }} in {{ language.name }},
-                            {% endif %}
-                        {% endfor %}
-                    </p>
+        <div class="general-container">
+            <div class="section-title">
+                <div class="section-title-text">Work experience</div>
+                <div class="section-title-line"></div>
+            </div>
+            <div class="general-container-row">
+                {% for job in jobs %}
+                <div class="work-item">
+                    <div class="section-title-text">{{ job.title }}</div>
+                    <div class="job-date">{{ job.since|date("F Y") }} -
+                        {% if job.isActive %}
+                            Present
+                        {% else %}
+                            {{ job.until|date("F Y") }}
+                        {% endif %}
+                    </div>
+                    <div class="description">{{ job.description }}</div>
                 </div>
-                <div class="socials">
-                    <div class="social-link">
-                        {% if isOwner %}
-                            <a href="tel:{{ user.phone }}"><img src="assets/img/socials/phone.png"
-                                                                class="social-img"></a>
-                        {% else %}
-                            <a href="tel:{{ user.phone }}"><img src="../assets/img/socials/phone.png"
-                                                                class="social-img"></a>
-                        {% endif %}
-                    </div>
-
-                    <div class="social-link" id="mail">
-                        {% if isOwner %}
-                            <a href="mailto:{{ user.email }}"><img src="assets/img/socials/mail.png" class="social-img"></a>
-                        {% else %}
-                            <a href="mailto:{{ user.email }}"><img src="../assets/img/socials/mail.png"
-                                                                   class="social-img"></a>
-                        {% endif %}
-                    </div>
-
-                    <div class="social-link owner" id="copy-link">
-                        {% if isOwner %}
-                            <img src="assets/img/socials/share.png" class="social-img" id="copy"
-                                 data-id="{{ user.id }}">
-                        {% else %}
-                            <img src="../assets/img/socials/share.png" class="social-img" id="copy"
-                                 data-id="{{ user.id }}">
-                        {% endif %}
-                    </div>
-
-                    <div class="social-link owner" id="download-pdf">
-                        {% if isOwner %}
-                            <img src="assets/img/socials/download.png" class="social-img" id="download"
-                                 data-id="{{ user.id }}">
-                        {% else %}
-                            <img src="../assets/img/socials/download.png" class="social-img" id="download"
-                                 data-id="{{ user.id }}">
-                        {% endif %}
-                    </div>
-                    {#                <div class="social-link"> #}
-                    {#                    <a href="https://www.linkedin.com/in/andrei-nicolescu-069534254/" target="_blank"><img #}
-                    {#                                src="assets/img/socials/linkedin.png" class="social-img"></a> #}
-                    {#                </div> #}
-                    {#                <div class="social-link"> #}
-                    {#                    <a href="https://www.instagram.com/andrei_nicolescu/" target="_blank"><img #}
-                    {#                                src="assets/img/socials/instagram.png" class="social-img"></a> #}
-                    {#                </div> #}
-                    {#                <div class="social-link"> #}
-                    {#                    <a href="https://www.facebook.com/profile.php?id=100007184986275" target="_blank"><img #}
-                    {#                                src="assets/img/socials/facebook.png" class="social-img"></a> #}
-                    {#                </div> #}
-                </div>
+                {% if loop.index % 2 == 0 %}
+            </div><div class="general-container-row">
+                {% endif %}
+                {% endfor %}
             </div>
         </div>
 
-        <div class="inline">
-            <div class="side-content" id="side-content">
-                {% for edu in education %}
-                    <div class="card-container">
-                        <div class="card">
-                            <div class="card-title">
-                                <h2 style="margin-top: 25px;">{{ edu.degree }} in {{ edu.profile }}</h2>
-                            </div>
-                            <div class="card-title">
-                                <h3>{{ edu.institution }}</h3>
-                            </div>
-                            <p style="color: gray">{{ edu.location }} - {{ edu.date|date('F Y') }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
+        <div class="general-container">
+            <div class="section-title">
+                <div class="section-title-text">Education</div>
+                <div class="section-title-line"></div>
             </div>
-            <div class="content" id="content">
-                {% for job in jobs %}
-                    <div class="card-container">
-                        <div class="card">
-                            <div class="card-title">
-                                <h2 style="margin-top: 25px;">{{ job.title }}</h2>
-                                <h3 style="margin-top: 25px;" class="date"><i>{{ job.since|date("F Y") }} -
-                                        {% if job.isActive %}
-                                            Present
-                                        {% else %}
-                                            {{ job.until|date("F Y") }}
-                                        {% endif %}
-                                    </i></h3>
-                            </div>
-                            <div class="card-title">
-                                <h3>{{ job.company }}</h3>
-                                <h3>
-                                    {% set yeardifference = job.until|date("Y") - job.since|date("Y") %}
-                                    {% set monthdifference = job.until|date("m") - job.since|date("m") %}
-                                    {% if yeardifference > 0 %}
-                                        {% if yeardifference == 1 %}
-                                            {{ yeardifference }} Year
-                                        {% else %}
-                                            {{ yeardifference }} Years
-                                        {% endif %}
-                                    {% endif %}
-                                    {% if yeardifference != 0 and monthdifference != 0 %}
-                                        and
-                                    {% endif %}
-                                    {% if monthdifference > 0 %}
-                                        {% if monthdifference == 1 %}
-                                            {{ monthdifference }} Month
-                                        {% else %}
-                                            {{ monthdifference }} Months
-                                        {% endif %}
-                                    {% endif %}
-                                </h3>
-                            </div>
-                            <p style="color: gray">{{ job.description }}</p>
-                            {#                <div class="skill-list"> #}
-                            {#                    <div class="skill">PHP 8</div> #}
-                            {#                    <div class="skill">Symfony 6</div> #}
-                            {#                    <div class="skill">MySQL</div> #}
-                            {#                    <div class="skill">Javascript</div> #}
-                            {#                    <div class="skill">HTML</div> #}
-                            {#                    <div class="skill">CSS</div> #}
-                            {#                </div> #}
-                        </div>
+            {% if education|length == 1 %}
+            <div class="general-container-row" style="justify-content: flex-start !important;">
+                {% else %}
+                <div class="general-container-row">
+                    {% endif %}
+                    {% for edu in education %}
+                    <div class="edu-item">
+                        <div class="section-title-text">{{ edu.degree }} in {{ edu.profile }}</div>
+                        <div class="job-date">{{ edu.institution }}</div>
+                        <div class="description">{{ edu.location }} - {{ edu.date|date('F Y') }}</div>
                     </div>
-                {% endfor %}
+                    {% if loop.index % 3 == 0 %}
+                </div><div class="general-container-row">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="general-container">
+                <div class="section-title">
+                    <div class="section-title-text">Languages</div>
+                    <div class="section-title-line"></div>
+                </div>
+                <div class="general-container-row">
+                    {% for language in languages %}
+                        <div class="language-item">
+                        <div class="section-title-text">{{ language.level }} in {{ language.name }}</div>
+                        {% if loop.index % 5 == 0 %}
+                            </div><div class="general-container-row">
+                        {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
 {% endblock %}

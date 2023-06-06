@@ -1,5 +1,41 @@
 import axios from "axios";
 
+let qrcode = new QRCode("qr_code", {
+    text: "http://localhost:8080/" + userId,
+    width: 64,
+    height: 64,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+});
+
+function getQr() {
+    let opt = {
+        // margin: [0, 0, 0, 0],
+        filename: 'my_cloud_vitae_qr.pdf',
+        // image: {type: 'jpeg', quality: 1},
+        // backgroundColor: '#000000',
+        // html2canvas: {scale: 3, scrollY: 1, backgroundColor: '#000000', windowWidth: 1, windowHeight: 1},
+        // jsPDF: {unit: 'in', format: 'B6', orientation: 'landscape', precision: '12', putOnlyUsedFonts: true, width: 10, height: 10, fillColor: '#000000'}
+    };
+
+    // html2pdf().set(opt).from(document.getElementById('qr_code')).save()
+    var exporter = new html2pdf(document.getElementById('qr_code'), {
+        margin:       0,
+        filename:     'myfile.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true, width: 70, height: 70},
+        jsPDF:        { unit: 'px', format: [70, 70], orientation: 'portrait' }
+    });
+    exporter.getPdf(true).then((pdf) => {
+        console.log('pdf file downloaded');
+    });
+}
+
+document.getElementById('get-qr').addEventListener("click", ev => {
+    getQr()
+})
+
 function myFunction(x) {
     // if (x <= 550) { // If media query matches
     //     if (x <= 400) {
