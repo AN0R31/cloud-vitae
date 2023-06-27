@@ -402,3 +402,11 @@ h5:hover {
         display: none;
     }
 }
+
+.qr-code {
+    width: 64px;
+    height: 64px;
+    margin: 120px 0 0 120px;
+    border: 2px solid white;
+    box-shadow: 0 0 15px 2px black;
+}

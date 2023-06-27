@@ -24,7 +24,6 @@ body {
     width: 75%;
     height: fit-content;
     background-color: #1c1c1c;
-    border: 1px solid #1f1f1f;
     border-radius: 10px;
     padding-bottom: 5%;
 }
@@ -170,9 +169,10 @@ a {
 .popup {
     width: 75%;
     height: 30%;
-    background-color: white;
+    background-color: #2d2d2d;
+    color: whitesmoke;
     margin: 0 auto;
-    border-radius: 10px;
+    border-radius: 2px;
 }
 
 .pointer-button {
@@ -297,4 +297,12 @@ a {
     justify-content: space-evenly;
     align-items: center;
     height: 85%;
+}
+
+.qr-code {
+    width: 64px;
+    height: 64px;
+    margin: 236px 0 0 236px;
+    border: 2px solid white;
+    box-shadow: 0 0 15px 2px black;
 }

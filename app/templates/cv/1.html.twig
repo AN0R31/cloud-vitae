@@ -12,10 +12,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.1/purify.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/polyfills.umd.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     {% endblock %}
 
 {% block body %}
     <script>
+        let userId = '{{ user.id }}';
         {% if isOwner %}
         let isOwner = true;
         {% else %}
@@ -51,6 +56,9 @@
                     {% endif %}
                     {% if isOwner %}
                         <div id="change-profile-picture-button" class="change-profile-picture-button owner">✏️</div>
+                        <div id="qr_code" class="qr-code">
+                            <h1 style="display: none" id="qr_code_hidden">{{ user.name }}</h1>
+                        </div>
                     {% endif %}
                 </div>
             </div>
@@ -119,6 +127,13 @@
                         {% else %}
                             <img src="../assets/img/socials/download.png" class="social-img" id="download"
                                  data-id="{{ user.id }}">
+                        {% endif %}
+                    </div>
+                    <div class="social-link owner" id="download-qr">
+                        {% if isOwner %}
+                            <img src="assets/img/socials/qr-logo.png" class="social-img" id="qr-download" data-id="{{ user.id }}">
+                        {% else %}
+                            <img src="../assets/img/socials/qr-logo.png" class="social-img" id="qr-download" data-id="{{ user.id }}">
                         {% endif %}
                     </div>
                     {#                <div class="social-link"> #}

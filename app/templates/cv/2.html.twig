@@ -32,9 +32,9 @@
     <div class="popup-container" id="popup">
         <div class="popup">
             <div style="display: flex; justify-content: space-between; height: 15%;">
-                <h2 style="margin-top: 2%">Choose a new theme!</h2>
-                <div class="pointer-button" style="margin-top: 2%">
-                    <h2 id="cancelChangeThemeButton">Cancel</h2>
+                <h2 style="margin-left: 2%">Choose a new theme!</h2>
+                <div class="pointer-button" style="margin-right: 2%">
+                    <h2 id="cancelChangeThemeButton" style="margin-right: 2%;">Cancel</h2>
                 </div>
             </div>
             <div class="thumb-container">
@@ -67,7 +67,7 @@
                     <div class="about-button owner" id="download">Download</div>
                     <div class="about-button"><a href="tel:{{ user.phone }}">Call</a></div>
                     <div class="about-button"><a href="mailto:{{ user.email }}">Email</a></div>
-                    <div class="about-button" id="get-qr">QR</div>
+                    <div class="about-button" id="download-qr">QR</div>
                     <div class="about-button owner" id="copy" data-id="{{ user.id }}">Link</div>
                 </div>
                 {% if isOwner %}
