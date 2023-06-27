@@ -56,7 +56,11 @@
                     </div>
                 </div>
             {% else %}
-                <div class="avatar" style="background-image: url(../{{ user.picture }})"></div>
+                {% if user.picture|slice(0, 4) == 'http' %}
+                    <div class="avatar" style="background-image: url({{ user.picture }})"></div>
+                {% else %}
+                    <div class="avatar" style="background-image: url(../{{ user.picture }})"></div>
+                {% endif %}
             {% endif %}
 
             <div class="about-text-container">

@@ -179,7 +179,7 @@ class HomeController extends AbstractController
                 $eduItem->setLocation($request->request->get('edu-location-' . $i));
                 $eduItem->setProfile($request->request->get('edu-profile-' . $i));
                 $eduItem->setDegree($request->request->get('edu-degree-' . $i));
-                $date = new DateTimeImmutable($request->request->get('edu-graduated-on' . $i));
+                $date = new DateTimeImmutable($request->request->get('edu-graduated-on-' . $i));
                 $eduItem->setDate($date);
                 $eduItem->setUser($user);
 
@@ -195,7 +195,7 @@ class HomeController extends AbstractController
                 $eduItem->setLocation($request->request->get('location-' . $i));
                 $eduItem->setProfile($request->request->get('profile-' . $i));
                 $eduItem->setDegree($request->request->get('degree-' . $i));
-                $date = new DateTimeImmutable($request->request->get('graduated-on' . $i));
+                $date = new DateTimeImmutable($request->request->get('graduated-on-' . $i));
                 $eduItem->setDate($date);
                 $eduItem->setUser($user);
 
